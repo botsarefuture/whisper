@@ -121,10 +121,11 @@ def transcribe(
     the spoken language ("language"), which is detected when `decode_options["language"]` is None.
     """
     import os
+
     with open(os.path.join(status_path, f"{job_id}.txt"), "w") as f:
         percentage_done = 0
-        f.write(str(percentage_done)) # So the user wont be shown text: "In queque"
-        
+        f.write(str(percentage_done))  # So the user wont be shown text: "In queque"
+
     dtype = torch.float16 if decode_options.get("fp16", True) else torch.float32
     if model.device == torch.device("cpu"):
         if torch.cuda.is_available():
@@ -156,8 +157,6 @@ def transcribe(
                 print(
                     f"Detected language: {LANGUAGES[decode_options['language']].title()}"
                 )
-    
-    
 
     language: str = decode_options["language"]
     task: str = decode_options.get("task", "transcribe")
@@ -498,11 +497,11 @@ def transcribe(
                 prompt_reset_since = len(all_tokens)
 
             # update progress bar
-            
+
             pbar.update(min(content_frames, seek) - previous_seek)
             print("Writing status into,", os.path.join(status_path, f"{job_id}.txt"))
             with open(os.path.join(status_path, f"{job_id}.txt"), "w") as f:
-                percent = seek/(content_frames/100) # calculate percent of done.
+                percent = seek / (content_frames / 100)  # calculate percent of done.
                 formatted_percentage = "{:.2f}".format(percent)
                 f.write(formatted_percentage)
 
